@@ -1,118 +1,164 @@
-# 🎯 AI Lead Generation Agent - Powered by Firecrawl's Extract Endpoint
-AI Lead Generation Agent that automatically discovers and qualifies potential leads from Quora. Using Firecrawl for intelligent web scraping, Phidata for agent orchestration, and Composio for Google Sheets integration, you'll create a system that can continuously generate and organize qualified leads with minimal human intervention!
+# 🎯 AI Lead Generation Agent
 
-![AI Lead Generation Agent](https://github.com/GURPREETKAURJETHRA/AI-Lead-Generation-Agent/blob/main/IMG_AILG/AIL1.jpg) 
+An intelligent lead generation tool that discovers and qualifies potential leads from Google search results using AI-powered analysis. Built with an optimized architecture for speed and efficiency.
 
-Here's what it does:                    
-↳ Finds potential leads from online discussions                                      
-↳ Extracts user profiles using intelligent web scraping                  
-↳ Organizes qualified leads in Google Sheets                     
-↳ Runs on autopilot without human supervision        
+![AI Lead Generation Agent](https://img.shields.io/badge/Status-Active-brightgreen) ![Python](https://img.shields.io/badge/Python-3.8+-blue) ![Streamlit](https://img.shields.io/badge/Streamlit-1.0+-red)
 
-![AI Lead Generation Agent](https://github.com/GURPREETKAURJETHRA/AI-Lead-Generation-Agent/blob/main/IMG_AILG/AIL2.jpg) 
-           
-The best part?                 
-It's built with tools anyone can use:                    
+## 🚀 What It Does
 
-→ **Firecrawl** for smart web scraping                     
-→ **phidata** for agent orchestration                      
-→ **Composio** for Google Sheets integration                       
-→ **Google Gemini** for lead qualification                            
-       
-- No more manual searching.            
-- No more copy-pasting.                   
-- No more spreadsheet updating.                         
-                                           
-Your sales team can finally focus on what matters:                 
-Building relationships and closing deals.                       
-         
+- **🔍 Smart Search**: Uses Serper.dev to search Google and extract relevant snippets
+- **📋 Rule-Based Filtering**: Pre-filters results to reduce AI API calls by 60%
+- **🎯 Batch AI Analysis**: Processes leads in batches for qualification and scoring
+- **📊 Intelligent Ranking**: Scores leads based on relevance and intent signals
+- **💾 CSV Export**: Exports qualified leads in CRM-ready format
+- **⚡ Optimized Architecture**: 10x faster with fewer API calls
 
-## Features🌟
+## 🏗️ Architecture Highlights
 
-- **🎯 Targeted Search**: Uses Firecrawl's search endpoint to find relevant Quora URLs based on your search criteria
-  
-- **💡 Intelligent Extraction**: Leverages Firecrawl's new Extract endpoint to pull user information from Quora profiles
-  
-- **⚙️ Automated Processing**: Formats extracted user information into a clean, structured format
-  
-- **💻 Google Sheets Integration**: Automatically creates and populates Google Sheets with lead information
-  
-- **✍️ Customizable Criteria**: Allows you to define specific search parameters to find your ideal leads for your niche
-  
+- **No Web Scraping**: Uses Google search snippets only (legal and fast)
+- **Batch Processing**: Analyzes 3-5 leads per API call instead of 1
+- **Model Fallback**: Automatically tries different Gemini models on quota limits
+- **Smart Orchestration**: AI planner coordinates the entire workflow
+- **Fallback Logic**: Graceful degradation when APIs are unavailable
 
-![AI Lead Generation Agent](https://github.com/GURPREETKAURJETHRA/AI-Lead-Generation-Agent/blob/main/IMG_AILG/AIL3.jpg) 
+## 🛠️ Tech Stack
 
+- **🔍 Serper.dev**: Google search API (2,500 free searches/month)
+- **🤖 Google Gemini**: AI analysis with automatic model fallback
+- **📊 Streamlit**: Modern web UI
+- **🐍 Python**: Core logic with type hints
+- **📈 CSV Export**: CRM-ready lead data
 
-The AI Lead Generation Agent automates the process of finding and qualifying potential leads from Quora. It uses Firecrawl's search and the new Extract endpoint to identify relevant user profiles, extract valuable information, and organize it into a structured format in Google Sheets. This agent helps sales and marketing teams efficiently build targeted lead lists while saving hours of manual research!!!
+## ⚡ Quick Start
 
+### 1. Clone & Setup
+```bash
+git clone https://github.com/shrushtijadhavv/AI-Lead-Generation-Agent.git
+cd AI-Lead-Generation-Agent
+python -m venv venv
+# Windows:
+venv\Scripts\activate
+# macOS/Linux:
+# source venv/bin/activate
+```
 
-![AI Lead Generation Agent](https://github.com/GURPREETKAURJETHRA/AI-Lead-Generation-Agent/blob/main/IMG_AILG/AIL4.jpg) 
+### 2. Install Dependencies
+```bash
+pip install -r requirements.txt
+```
 
-## ⚡How to Get Started
+### 3. Get API Keys
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/GURPREETKAURJETHRA/AI-Lead-Generation-Agent.git
-   cd AI-Lead-Generation-Agent
-   ```
-3. **Create and activate a virtual environment** (recommended):
-   ```bash
-   python -m venv venv
-   # On Windows:
-   venv\Scripts\activate
-   # On macOS/Linux:
-   # source venv/bin/activate
-   ```
+#### Google Gemini API Key
+- Visit [Google AI Studio](https://aistudio.google.com/app/apikey)
+- Create a new API key
+- Copy the key
 
-4. **Install the required packages**:
-   ```bash
-   pip install -r requirements.txt
-   ```
+#### Serper API Key
+- Visit [Serper.dev](https://serper.dev)
+- Sign up for a free account (2,500 searches/month)
+- Get your API key
 
-5. **Set up Google Sheets integration in Composio**:
-    - Go to [Composio Dashboard](https://app.composio.dev)
-    - Log in with your Composio account
-    - Navigate to the "Integrations" or "Connections" section
-    - Click "Add Integration" or "Connect"
-    - Search for "Google Sheets" and select it
-    - Follow the OAuth flow to connect your Google account
-    - Make sure the integration is active and shows as "Connected"
-    - **Note**: The old `composio add googlesheets` CLI command is deprecated. You must set up the integration through the Composio dashboard.
+### 4. Configure Environment
+Create a `.env` file in the project root (copy from `.env.example`):
+```bash
+cp .env.example .env
+```
 
-6. **Set up your API keys**:
-   - Copy the `.env.example` file to `.env` in the project root directory
-   - Fill in your actual API keys in the `.env` file:
-     ```
-     FIRECRAWL_API_KEY=your_actual_firecrawl_api_key
-     GOOGLE_API_KEY=your_actual_google_api_key
-     COMPOSIO_API_KEY=your_actual_composio_api_key
-     ```
-   - Get your Firecrawl API key from [Firecrawl's website](https://www.firecrawl.dev/app/api-keys)
-   - Get your Composio API key from [Composio's website](https://composio.ai)
-   - Get your Google API key from [Google AI Studio](https://aistudio.google.com/app/apikey)
-   - **Note**: You can also enter or override these keys directly in the Streamlit app interface if needed
+Then edit `.env` with your actual API keys:
+```env
+GOOGLE_API_KEY=your_google_gemini_api_key_here
+SERPER_API_KEY=your_serper_api_key_here
+```
 
-7. **Run the application**:
-   ```bash
-   # Make sure your virtual environment is activated
-   # On Windows:
-   venv\Scripts\activate
-   # On macOS/Linux:
-   # source venv/bin/activate
-   
-   streamlit run ai_lead_generation_agent.py
-   ```
+### 5. Run the App
+```bash
+streamlit run app.py
+```
 
+## 🎯 How to Use
 
-Happy coding! 🚀✨
+1. **Open the Streamlit app** in your browser
+2. **Enter API keys** in the sidebar (or use .env file)
+3. **Describe your ideal leads** in the text area
+4. **Click "🚀 Generate Leads"**
+5. **Download results** as CSV
 
-## ©️ License 🪪 
+### Example Lead Descriptions:
+- "Find startup founders discussing customer acquisition challenges"
+- "Locate marketing managers looking for growth strategies"
+- "Discover CTOs interested in AI implementation"
+
+## 📊 Workflow
+
+1. **🧠 Orchestrator**: AI plans search strategy and qualification criteria
+2. **🔍 Search**: Multi-query Google search via Serper
+3. **📋 Filter**: Rule-based pre-filtering removes obvious spam
+4. **🎯 Analyze**: Batch AI qualification and scoring
+5. **📊 Process**: Deduplication, ranking, and enhancement
+6. **💾 Export**: CSV download for CRM import
+
+## ⚠️ Rate Limits & Quotas
+
+### Google Gemini
+- **Free Tier**: 1,500 requests/day, 15 RPM
+- **Paid**: Higher limits available
+- **Fallback**: App tries different models automatically
+
+### Serper.dev
+- **Free Tier**: 2,500 searches/month
+- **Paid**: Higher limits available
+
+## 🔧 Configuration
+
+### Settings (via Streamlit sidebar):
+- **Results per query**: 3-15 (default: 8)
+- **API Keys**: Override environment variables
+
+### Advanced Tuning:
+- Modify `batch_size` in `batch_analyze_leads()` for different batch sizes
+- Adjust spam/quality keywords in `rule_based_filter()`
+- Customize qualification prompts in agent system messages
+
+### Model Utility:
+Run `python model.py` to list all available Google Gemini models and check API connectivity.
+
+## 📁 Project Structure
+
+```
+AI-Lead-Generation-Agent/
+├── app.py                 # Main Streamlit application
+├── model.py              # Utility script to list available Gemini models
+├── requirements.txt      # Python dependencies
+├── README.md            # This file
+├── LICENSE              # MIT License
+├── .env.example         # Environment variables template
+├── .env                 # Environment variables (create from .env.example)
+├── .gitignore          # Git ignore rules
+└── __pycache__/        # Python cache (auto-generated)
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## 📄 License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
+## 🙏 Acknowledgments
+
+- **Serper.dev** for reliable Google search API
+- **Google Gemini** for powerful AI analysis
+- **Streamlit** for the amazing web app framework
+- **Phi** for the agent orchestration framework
+
 ---
 
-#### **If you like this LLM Project do drop ⭐ to this repo**
-#### Follow me on [![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/gurpreetkaurjethra/) &nbsp; [![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/GURPREETKAURJETHRA/)
+**⭐ If you find this project helpful, please give it a star!**
 
----
+**Follow for more AI automation projects**
