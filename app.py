@@ -461,9 +461,9 @@ def export_csv(leads: List[Dict]) -> str:
 
 def main():
     global GOOGLE_API_KEY, SERPER_API_KEY
-    st.set_page_config("AI Lead Generation (Optimized)", "🎯", layout="wide")
+    st.set_page_config("AI Lead Generation", "🎯", layout="wide")
 
-    st.title("🎯 AI Lead Generation Agent (Optimized Architecture)")
+    st.title("🎯 AI Lead Generation Agent")
     st.markdown("""
 **New Architecture - 10x Faster, Fewer API Calls:**
 - ✅ No web scraping (uses Google search snippets only)
@@ -472,14 +472,6 @@ def main():
 - ✅ Single-pass qualification + scoring (50% fewer API calls)
 - ✅ Smart orchestration with planning agent
 - ✅ Automatic model fallback on rate limits
-
-**Tech Stack:**
-- 🔍 Serper.dev (2,500 free searches/month)
-- 🤖 Google Gemini (tries multiple models automatically)
-- 📊 CSV Export (CRM-ready)
-
-⚠️ **Rate Limit Notice:** If you hit quota limits, the app will automatically try different Gemini models or use fallback logic.
----
 """)
 
     with st.sidebar:
