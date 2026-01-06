@@ -5,3 +5,5 @@ composio==0.1.1
 pydantic==2.10.5
 streamlit
 python-dotenv
+google-generativeai
+requests
