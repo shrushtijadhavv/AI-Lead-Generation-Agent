@@ -17,7 +17,7 @@ It's built with tools anyone can use:
 → **Firecrawl** for smart web scraping                     
 → **phidata** for agent orchestration                      
 → **Composio** for Google Sheets integration                       
-→ **OpenAI GPT-4o** for lead qualification                            
+→ **Google Gemini** for lead qualification                            
        
 - No more manual searching.            
 - No more copy-pasting.                   
@@ -55,21 +55,51 @@ The AI Lead Generation Agent automates the process of finding and qualifying pot
    git clone https://github.com/GURPREETKAURJETHRA/AI-Lead-Generation-Agent.git
    cd AI-Lead-Generation-Agent
    ```
-3. **Install the required packages**:
+3. **Create and activate a virtual environment** (recommended):
+   ```bash
+   python -m venv venv
+   # On Windows:
+   venv\Scripts\activate
+   # On macOS/Linux:
+   # source venv/bin/activate
+   ```
+
+4. **Install the required packages**:
    ```bash
    pip install -r requirements.txt
    ```
-4. **Important thing to do in composio**:
-    - in the terminal, run this command: `composio add googlesheets`
-    - In your compposio dashboard, create a new google sheet intergation and make sure it is active in the active integrations/connections tab
 
-5. **Set up your API keys**:
+5. **Set up Google Sheets integration in Composio**:
+    - Go to [Composio Dashboard](https://app.composio.dev)
+    - Log in with your Composio account
+    - Navigate to the "Integrations" or "Connections" section
+    - Click "Add Integration" or "Connect"
+    - Search for "Google Sheets" and select it
+    - Follow the OAuth flow to connect your Google account
+    - Make sure the integration is active and shows as "Connected"
+    - **Note**: The old `composio add googlesheets` CLI command is deprecated. You must set up the integration through the Composio dashboard.
+
+6. **Set up your API keys**:
+   - Copy the `.env.example` file to `.env` in the project root directory
+   - Fill in your actual API keys in the `.env` file:
+     ```
+     FIRECRAWL_API_KEY=your_actual_firecrawl_api_key
+     GOOGLE_API_KEY=your_actual_google_api_key
+     COMPOSIO_API_KEY=your_actual_composio_api_key
+     ```
    - Get your Firecrawl API key from [Firecrawl's website](https://www.firecrawl.dev/app/api-keys)
    - Get your Composio API key from [Composio's website](https://composio.ai)
-   - Get your OpenAI API key from [OpenAI's website](https://platform.openai.com/api-keys)
+   - Get your Google API key from [Google AI Studio](https://aistudio.google.com/app/apikey)
+   - **Note**: You can also enter or override these keys directly in the Streamlit app interface if needed
 
-6. **Run the application**:
+7. **Run the application**:
    ```bash
+   # Make sure your virtual environment is activated
+   # On Windows:
+   venv\Scripts\activate
+   # On macOS/Linux:
+   # source venv/bin/activate
+   
    streamlit run ai_lead_generation_agent.py
    ```
 
