@@ -13,40 +13,6 @@ from phi.agent import Agent
 from phi.model.google import Gemini
 
 # =========================
-# OUTPUT INFERENCE HELPERS
-# =========================
-
-def infer_username_from_url(url: str) -> str:
-    if not url:
-        return "Unknown"
-    match = re.search(r"(reddit\.com/user/|reddit\.com/u/)([^/]+)", url)
-    if match:
-        return match.group(2)
-    return url.split("/")[2] if "://" in url else "Unknown"
-
-
-def infer_bio(content: str, role: str) -> str:
-    if role and role != "Unknown":
-        return f"{role} | Active contributor discussing relevant problems"
-    return "Active contributor discussing industry-relevant topics"
-
-
-def infer_post_type(url: str) -> str:
-    if "comment" in url:
-        return "comment"
-    return "post"
-
-
-def infer_timestamp() -> str:
-    return "Recent"
-
-
-def infer_upvotes(score: int) -> int:
-    # Proxy metric (since we don't scrape platforms)
-    return max(0, min(score * 2, 9999))
-
-
-# =========================
 # ENV SETUP
 # =========================
 load_dotenv()
@@ -62,7 +28,7 @@ def create_model_with_fallback(api_key: str):
     """Try different Gemini models with fallback when quota exceeded"""
     models_to_try = [
         "gemini-2.5-flash",       # Try this first - different quota
-        "gemini-2.0-flash-exp",    # Smaller, faster
+        "gemini-2.0-flash-",    # Smaller, faster
         "gemini-2.5-pro",         # More powerful, different quota
     ]
     
@@ -328,16 +294,14 @@ Respond with a JSON array of {len(batch)} results, one for each lead in order.""
                 for idx, result in enumerate(results[:len(batch)]):
                     if result.get("qualified", False):
                         lead = {
-                            "bio": infer_bio(batch[idx]["snippet"], result.get("role", "Unknown")),
-                            "username": infer_username_from_url(batch[idx]["link"]),
-                            "post_type": infer_post_type(batch[idx]["link"]),
-                            "links": batch[idx]["link"],
-                            "website_url": batch[idx]["link"],
-                            "upvotes": infer_upvotes(result.get("score", 50)),
-                            "timestamp": infer_timestamp(),
+                            "title": batch[idx]["title"],
+                            "content": batch[idx]["snippet"],
+                            "source_url": batch[idx]["link"],
+                            "role": result.get("role", "Unknown"),
+                            "is_decision_maker": result.get("is_decision_maker", False),
                             "score": result.get("score", 50),
-                            "intent_signals": result.get("intent_signals", []),
-                            "summary": result.get("summary", "No summary")
+                            "summary": result.get("summary", "No summary"),
+                            "intent_signals": result.get("intent_signals", [])
                         }
                         qualified_leads.append(lead)
                         st.success(f"   ✅ Qualified: {lead['title'][:50]}... (Score: {lead['score']})")
@@ -461,34 +425,32 @@ def extract_json_from_response(content: str, expect_array: bool = False) -> Opti
 # =========================
 
 def export_csv(leads: List[Dict]) -> str:
+    """Export leads to CSV"""
     output = io.StringIO()
     writer = csv.writer(output)
-
     writer.writerow([
-        "Bio",
-        "Username",
-        "Post Type",
-        "Links",
-        "Website URL",
-        "Upvotes",
-        "Timestamp",
+        "Rank",
         "Score",
+        "Title",
+        "Role",
+        "Decision Maker",
+        "Summary",
+        "Content",
         "Intent Signals",
-        "Summary"
+        "Source URL"
     ])
 
     for lead in leads:
         writer.writerow([
-            lead.get("bio", ""),
-            lead.get("username", ""),
-            lead.get("post_type", ""),
-            lead.get("links", ""),
-            lead.get("website_url", ""),
-            lead.get("upvotes", 0),
-            lead.get("timestamp", ""),
+            lead.get("rank", ""),
             lead.get("score", 0),
+            lead.get("title", ""),
+            lead.get("role", "Unknown"),
+            "Yes" if lead.get("is_decision_maker", False) else "No",
+            lead.get("summary", ""),
+            lead.get("content", "")[:200],
             ", ".join(lead.get("intent_signals", [])),
-            lead.get("summary", "")
+            lead.get("source_url", "")
         ])
 
     return output.getvalue()
@@ -499,9 +461,9 @@ def export_csv(leads: List[Dict]) -> str:
 
 def main():
     global GOOGLE_API_KEY, SERPER_API_KEY
-    st.set_page_config("AI Lead Generation", "🎯", layout="wide")
+    st.set_page_config("AI Lead Generation (Optimized)", "🎯", layout="wide")
 
-    st.title("🎯 AI Lead Generation Agent")
+    st.title("🎯 AI Lead Generation Agent (Optimized Architecture)")
     st.markdown("""
 **New Architecture - 10x Faster, Fewer API Calls:**
 - ✅ No web scraping (uses Google search snippets only)
@@ -510,6 +472,14 @@ def main():
 - ✅ Single-pass qualification + scoring (50% fewer API calls)
 - ✅ Smart orchestration with planning agent
 - ✅ Automatic model fallback on rate limits
+
+**Tech Stack:**
+- 🔍 Serper.dev (2,500 free searches/month)
+- 🤖 Google Gemini (tries multiple models automatically)
+- 📊 CSV Export (CRM-ready)
+
+⚠️ **Rate Limit Notice:** If you hit quota limits, the app will automatically try different Gemini models or use fallback logic.
+---
 """)
 
     with st.sidebar:
@@ -674,11 +644,8 @@ Click on your API key to see usage graphs.
             with col2:
                 st.metric("Filtered", len(filtered_snippets))
             with col3:
-                if final_leads:
-                    avg_score = sum(l["score"] for l in final_leads) / len(final_leads)
-                    st.metric("Avg Score", f"{avg_score:.0f}/100")
-                else:
-                    st.metric("Avg Score", "N/A")
+                avg_score = sum(l["score"] for l in final_leads) / len(final_leads)
+                st.metric("Avg Score", f"{avg_score:.0f}/100")
             
             # CSV Download
             st.download_button(
