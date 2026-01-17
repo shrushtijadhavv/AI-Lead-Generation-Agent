@@ -17,8 +17,14 @@ from phi.model.google import Gemini
 # =========================
 load_dotenv()
 
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-SERPER_API_KEY = os.getenv("SERPER_API_KEY")
+# Try Streamlit secrets first (for deployment), then fall back to .env (for local)
+try:
+    GOOGLE_API_KEY = st.secrets.get("GOOGLE_API_KEY", os.getenv("GOOGLE_API_KEY"))
+    SERPER_API_KEY = st.secrets.get("SERPER_API_KEY", os.getenv("SERPER_API_KEY"))
+except:
+    # Fallback to environment variables if secrets not available
+    GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+    SERPER_API_KEY = os.getenv("SERPER_API_KEY")
 
 # =========================
 # MODEL FACTORY WITH FALLBACK
